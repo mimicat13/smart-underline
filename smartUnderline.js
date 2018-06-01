@@ -3,25 +3,18 @@
  * @version 1.0
  *
  * @example
- * $(document).ready(function() {
- *      $('.smart-a').smartTooltip();
+ * $('.tabs').smartUnderline({
+ *       active: 1,
+ *       hideOn: '768px',
+ *       marginLeft: '12px',
+ *       callback: function(item) {
+ *         console.log(
+ *             'callback(' + $(item).data('id') + ')'
+ *         );
+ *       },
+ *     });
  *
- *      $('.smart-b').smartTooltip({static: true});
- *
- *      $('.smart-c').smartTooltip();
- *      $('.smart-c').smartTooltip('params', {static: true});
- *
- *      $('.smart-d').smartTooltip();
- *      $('.smart-d').smartTooltip('params', {
- *          content: 'loading',
- *          open: function(dom) {
- *              //new content (external ajax data for e.g)
- *              setTimeout(function() {
- *                 dom.smartTooltip('content', 'external content');
- *             }, 500);
- *          },
- *      });
- *   });
+ * $('.tabs').smartUnderline('destroy');
  *
  * @todo:
  *      toooltip data - build at init not at first hover
@@ -35,7 +28,7 @@
   };
 
   var private = {
-    items: null,
+    items: new Array(),
 
     randomString: function(length_) {
       var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
@@ -65,8 +58,6 @@
     },
 
     build: function(param) {
-      private.items = new Array();
-
       return this.each(function() {
         methods.params(param);
         var uid = private.getUid($(this));
@@ -77,18 +68,21 @@
         private.items[uid].underline = null;
 
         $(this).css('position', 'relative');
+        private.items[uid].elements.css('display', 'inline-block');
 
         $(window).off('resize', private.onResize);
         $(window).on('resize', private.onResize);
 
         private.items[uid].elements.each(function(i, dom) {
           $(dom).data('id', i);
+
           var $inner = $(dom).children('a');
           if (!$inner.length) {
             $inner = $(dom).children('span');
-          }
-          if (!$inner.length) {
-            $inner = $(dom);
+            if (!$inner.length) {
+              $(dom).wrapInner( "<span></span>" );
+              $inner = $(dom).children('span');
+            }
           }
 
           private.items[uid].coords[i] = new Object();

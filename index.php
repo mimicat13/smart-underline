@@ -21,13 +21,20 @@
         }
 
         .tabs .tab {
-            display: inline-block;
-            position: relative;
             cursor: pointer;
             padding-left: 12px;
             padding-right: 12px;
             margin-right: 50px;
             outline: none;
+            border: 1px solid white;
+        }
+
+        .tabs .tab span {
+            border: 1px solid white;
+        }
+
+        .tabs-clear li {
+            border: 1px solid white;
         }
 
     </style>
@@ -37,11 +44,19 @@
 </head>
 <body style="background:teal;">
 
-<div style="width:700px">
+<div style="text-align: center;">
     <ul class="tabs">
         <li class="tab"><span>AAAAAA</span></li>
         <li class="tab"><span>BBBBBBBBBB</span></li>
         <li class="tab"><span>ccc</span></li>
+    </ul>
+</div>
+
+<div style="text-align: center;">
+    <ul class="tabs-clear">
+        <li>XXXXXX</li>
+        <li>YYYYYYYYYYYYY</li>
+        <li>ZZZZZ</li>
     </ul>
 </div>
 
@@ -51,23 +66,33 @@
 <script>
   $(document).ready(function() {
     function initTabs() {
-      $('.tabs').smartUnderline(
-          {
-            active: 1,
-            hideOn: '768px',
-            marginLeft: '12px',
-            callback: function(item) {
-              console.log(
-                  'callback(' + $(item).data('id') + ')'
-              );
-            },
-          });
+      $('.tabs').smartUnderline({
+        active: 1,
+        hideOn: '768px',
+        marginLeft: '12px',
+        callback: function(item) {
+          console.log(
+              'callback(' + $(item).data('id') + ')'
+          );
+        },
+      });
+
+      $('.tabs-clear').smartUnderline({
+        hideOn: '768px',
+        bottom: '-5px',
+        callback: function(item) {
+          console.log(
+              'callback(' + $(item).data('id') + ')'
+          );
+        },
+      });
     }
 
     initTabs();
 
     $('.dest').click(function() {
       $('.tabs').smartUnderline('destroy');
+      $('.tabs-clear').smartUnderline('destroy');
     });
 
     $('.init').click(function() {
